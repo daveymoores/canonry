@@ -4522,6 +4522,16 @@ export const MIGRATION_VERSIONS: ReadonlyArray<MigrationVersion> = [
       `CREATE INDEX IF NOT EXISTS idx_runs_project_kind_created ON runs(project_id, kind, created_at)`,
     ],
   },
+  {
+    // Providers a run does not call because each keeps failing on its
+    // account, frozen at queue time. Nullable with no default: every existing
+    // run, and every run an older writer queues, skips none.
+    version: 171,
+    name: 'runs-skipped-providers',
+    statements: [
+      `ALTER TABLE runs ADD COLUMN skipped_providers TEXT`,
+    ],
+  },
 ]
 
 /**
